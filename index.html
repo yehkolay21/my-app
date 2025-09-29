@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitokBot</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #1e1e1e;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2b2b2b;
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #444;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .app-container {
+            padding-top: 60px;
+            padding-bottom: 70px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .welcome-section {
+            padding: 40px 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .welcome-section h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #0088cc;
+        }
+        
+        .welcome-section p {
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .feature-list {
+            background: #2b2b2b;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px;
+            text-align: left;
+        }
+        
+        .feature-list li {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #2b2b2b;
+            padding: 15px;
+            border-top: 1px solid #444;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .nav-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            transition: color 0.3s;
+        }
+        
+        .nav-btn.active {
+            color: #0088cc;
+        }
+        
+        .user-info {
+            background: #2b2b2b;
+            padding: 15px;
+            margin: 15px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+        
+        .status {
+            background: #2b2b2b;
+            padding: 10px 15px;
+            margin: 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <strong>BitokBot</strong>
+    </div>
+    
+    <div class="app-container">
+        <div class="welcome-section">
+            <div class="status">✅ GitHub Pages активен</div>
+            
+            <h1>Добро пожаловать! 👋</h1>
+            <p>Ваш BitokBot успешно запущен через GitHub Pages</p>
+            
+            <div class="user-info" id="userInfo">
+                Загрузка данных пользователя...
+            </div>
+            
+            <div class="feature-list">
+                <h3>🚀 Функции готовы:</h3>
+                <ul>
+                    <li>🤖 Умный помощник</li>
+                    <li>💬 Чат с ботом</li>
+                    <li>⚙️ Настройки профиля</li>
+                    <li>📊 Статистика</li>
+                    <li>🌐 GitHub Pages хостинг</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bottom-nav">
+        <button class="nav-btn active">🏠</button>
+        <button class="nav-btn">💬</button>
+        <button class="nav-btn">⚙️</button>
+        <button class="nav-btn">👤</button>
+    </div>
+
+    <script>
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        
+        // Развернуть на весь экран
+        tg.expand();
+        tg.ready();
+        
+        // Получить данные пользователя
+        const user = tg.initDataUnsafe?.user;
+        const userInfoDiv = document.getElementById('userInfo');
+        
+        if (user) {
+            userInfoDiv.innerHTML = `
+                👤 <strong>${user.first_name || 'Пользователь'}</strong>
+                ${user.last_name ? user.last_name : ''}
+                ${user.username ? `<br>@${user.username}` : ''}
+                <br><small>ID: ${user.id}</small>
+            `;
+        } else {
+            userInfoDiv.innerHTML = '⚠️ Данные пользователя недоступны<br><small>Откройте через Telegram бота</small>';
+        }
+        
+        // Обработчики навигации
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                tg.showPopup({
+                    title: 'Уведомление',
+                    message: 'Функция в разработке 🚧',
+                    buttons: [{ type: 'ok' }]
+                });
+            });
+        });
+        
+        console.log('BitokBot Mini App запущен через GitHub Pages!');
+        console.log('User:', user);
+    </script>
+</body>
+</html>
